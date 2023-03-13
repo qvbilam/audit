@@ -60,7 +60,7 @@ class Audit
             'type' => $type,
             'data' => [
                 'text' => $text,
-                'tokenId' => 0,
+                'tokenId' =>0,
             ],
         ]);
 

@@ -1,3 +1,5 @@
+[![Tests](https://github.com/qvbilam/audit/actions/workflows/main.yaml/badge.svg)](https://github.com/qvbilam/audit/actions/workflows/main.yaml)
+
 ### 说明
 使用 [数美天净](https://help.ishumei.com/) 智能审核
 
