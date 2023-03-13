@@ -26,4 +26,6 @@ jobs:
         run: composer install
       # 执行 PHPUnit 测试
       - name: PHPUnit
-        run: ./vendor/bin/phpunit tests --colors
+        run: ./vendor/bin/phpunit tests --coverage-clover coverage.xml
+        after_success:
+          - bash <(curl -s https://codecov.io/bash)
