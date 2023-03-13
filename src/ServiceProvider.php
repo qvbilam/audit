@@ -1,8 +1,17 @@
 <?php
+
 declare(strict_types=1);
 
-namespace Qvbilam\Audit;
+/*
+ * This file is part of the qvbilam/audit
+ *
+ * (c) qvbilam <qvbilam@163.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
+namespace Qvbilam\Audit;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
@@ -10,8 +19,8 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
     public function register()
     {
-        $this->app->singleton(Audit::class, function(){
-            return new Audit(config('services.audit.key'), config("services.audit.app_id"));
+        $this->app->singleton(Audit::class, function () {
+            return new Audit(config('services.audit.key'), config('services.audit.app_id'));
         });
 
         $this->app->alias(Audit::class, 'audit');
