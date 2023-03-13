@@ -19,14 +19,15 @@ class StatusEnum
 
     /**
      * @param string $status
+     *
      * @return int
      */
     public static function SMv2ToStatus($status)
     {
-        switch ($status){
-            case "REJECT":
+        switch ($status) {
+            case 'REJECT':
                 return self::AUDIT_STATUS_REJECT;
-            case "REVIEW":
+            case 'REVIEW':
                 return self::AUDIT_STATUS_REVIEW;
             default:
                 return self::AUDIT_STATUS_PASS;

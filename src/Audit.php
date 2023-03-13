@@ -23,25 +23,29 @@ use Qvbilam\Audit\Response\TextResponse;
 class Audit
 {
     /**
-     * 应用key
+     * 应用key.
+     *
      * @var string
      */
     protected $key;
 
     /**
-     * 应用id
+     * 应用id.
+     *
      * @var string
      */
     protected $appId;
 
     /**
-     * 用户id
+     * 用户id.
+     *
      * @var string
      */
-    protected $userId = "0";
+    protected $userId = '0';
 
     /**
-     * 客户端参数
+     * 客户端参数.
+     *
      * @var array
      */
     private $clientOptions = [];
@@ -50,6 +54,7 @@ class Audit
 
     /**
      * Audit constructor.
+     *
      * @param string $key
      * @param string $appId
      */
@@ -68,7 +73,6 @@ class Audit
     }
 
     /**
-     * @param array $clientOptions
      * @return $this
      */
     public function setClientOptions(array $clientOptions)
@@ -80,18 +84,21 @@ class Audit
 
     /**
      * 文本审核.
+     *
      * @param string $text
      * @param string $type
+     *
      * @return TextResponse
+     *
      * @throws GuzzleException
      * @throws HttpException
      */
     public function text($text, $type = 'SOCIAL')
     {
         $url = 'http://api-text-bj.fengkongcloud.com/v2/saas/anti_fraud/text';
-        $responseContent = $this->request($url, ["text" => $text, "type" => $type]);
+        $responseContent = $this->request($url, ['text' => $text, 'type' => $type]);
         $responseContentDetail = $responseContent->detail;
-        if(is_string($responseContent->detail)){
+        if (is_string($responseContent->detail)) {
             $responseContentDetail = json_decode($responseContent->detail);
         }
         $result = new TextResponse();
@@ -101,25 +108,29 @@ class Audit
         $result->setContent($text);
         $result->setStatus(StatusEnum::SMv2ToStatus($responseContent->riskLevel));
         $result->setDescription($responseContentDetail->description);
+
         return $result;
     }
 
     /**
-     * 图片审核
+     * 图片审核.
+     *
      * @param string $image
      * @param string $type
      * @param string $channel
+     *
      * @return ImageResponse
+     *
      * @throws GuzzleException
      * @throws HttpException
      */
-    public function image($image, $type = "POLITICS_PORN_AD_BEHAVIOR", $channel = "HEAD_IMG")
+    public function image($image, $type = 'POLITICS_PORN_AD_BEHAVIOR', $channel = 'HEAD_IMG')
     {
-        $url = "http://api-img-bj.fengkongcloud.com/v2/saas/anti_fraud/img";
-        $responseContent = $this->request($url, ["img" => $image, "channel" => $channel, "type" => $type]);
+        $url = 'http://api-img-bj.fengkongcloud.com/v2/saas/anti_fraud/img';
+        $responseContent = $this->request($url, ['img' => $image, 'channel' => $channel, 'type' => $type]);
 
         $responseContentDetail = $responseContent->detail;
-        if(is_string($responseContent->detail)){
+        if (is_string($responseContent->detail)) {
             $responseContentDetail = json_decode($responseContent->detail);
         }
         $result = new ImageResponse();
@@ -129,34 +140,40 @@ class Audit
         $result->setContent($image);
         $result->setStatus(StatusEnum::SMv2ToStatus($responseContent->riskLevel));
         $result->setDescription($responseContentDetail->description);
+
         return $result;
     }
 
     /**
      * 请求
+     *
      * @param string $url
-     * @param array $data
+     * @param array  $data
+     *
      * @return mixed
+     *
      * @throws GuzzleException
      * @throws HttpException
      */
     protected function request($url, $data)
     {
-        try{
+        try {
             $params = $this->requestParams($data);
             $response = $this->getHttpClient()->post($url, [
                 'json' => array_filter($params),
             ]);
-        }catch (Exception $e){
+        } catch (Exception $e) {
             throw new HttpException($e->getMessage(), $e->getCode(), $e);
         }
+
         return $this->getResponseContent($response);
     }
 
     /**
-     * 获取响应内容
-     * @param $response
+     * 获取响应内容.
+     *
      * @return mixed
+     *
      * @throws HttpException
      */
     protected function getResponseContent($response)
@@ -167,29 +184,30 @@ class Audit
 
         $responseContent = json_decode($response->getBody()->getContents());
 
-
         if (self::REQUEST_SUCCESS_CODE != $responseContent->code) {
             throw new HttpException($responseContent->message);
         }
+
         return $responseContent;
     }
 
     /**
-     * 通用请求参数
-     * @param array $data
+     * 通用请求参数.
+     *
      * @return array
      */
     protected function requestParams(array $data)
     {
-        $type = $data["type"];
+        $type = $data['type'];
         $params = [
             'accessKey' => $this->key,
             'appId' => $this->appId,
-            "type" => $type,
-            "data" => $data,
+            'type' => $type,
+            'data' => $data,
         ];
-        $params["data"]["tokenId"] = $this->userId;
-        unset($params["data"]["type"]);
+        $params['data']['tokenId'] = $this->userId;
+        unset($params['data']['type']);
+
         return $params;
     }
 }
