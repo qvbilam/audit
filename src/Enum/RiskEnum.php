@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of the qvbilam/audit
  *
@@ -27,21 +25,31 @@ class RiskEnum
     const CUSTOMIZE = 'customize'; // 自定义
 
     /**
-     * https://help.ishumei.com/docs/tj/text/history/developDoc/
-     * 数美v2转换类型.
+     * 数美v2转换类型.(https://help.ishumei.com/docs/tj/text/history/developDoc/)
+     * @param string $type
+     * @return string
      */
-    public static function SMv2ToType(string $type): string
+    public static function SMv2ToType($type)
     {
-        return match ((int) $type) {
-            0 => self::NORMAL,
-            100 => self::POLITICS,
-            200 => self::PORN,
-            210 => self::ABUSE,
-            300 => self::AD,
-            400 => self::FLOOD,
-            500 => self::SPAM,
-            600 => self::CONTRABAND,
-            default => self::CUSTOMIZE,
-        };
+        switch ($type){
+            case 0:
+                return self::NORMAL;
+            case 100:
+                return self::POLITICS;
+            case 200:
+                return self::PORN;
+            case 210:
+                return self::ABUSE;
+            case 300:
+                return self::AD;
+            case 400:
+                return self::FLOOD;
+            case 500:
+                return self::SPAM;
+            case 600:
+                return self::CONTRABAND;
+            default:
+                return self::CUSTOMIZE;
+        }
     }
 }

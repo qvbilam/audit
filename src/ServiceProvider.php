@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of the qvbilam/audit
  *
@@ -26,7 +24,10 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $this->app->alias(Audit::class, 'audit');
     }
 
-    public function provides(): array
+    /**
+     * @return string[]
+     */
+    public function provides()
     {
         return [Audit::class, 'audit'];
     }

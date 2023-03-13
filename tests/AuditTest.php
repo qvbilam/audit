@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of the qvbilam/audit
  *
@@ -17,14 +15,14 @@ use Qvbilam\Audit\Audit;
 class AuditTest extends TestCase
 {
     // 测试客户端
-    public function testGetHttpClient(): void
+    public function testGetHttpClient()
     {
         $t = new Audit('mock-key');
         $this->assertInstanceOf(\GuzzleHttp\ClientInterface::class, $t->getHttpClient());
     }
 
     // 测试客户端参数
-    public function testSetClientOptions(): void
+    public function testSetClientOptions()
     {
         $t = new Qvbilam\Audit\Audit('mock-key');
         $this->assertNull($t->getHttpClient()->getConfig('field'));
@@ -34,7 +32,7 @@ class AuditTest extends TestCase
     }
 
     // 测试异常文本审核
-    public function testTextWithBadRequest(): void
+    public function testTextWithBadRequest()
     {
         $mockUrl = 'http://api-text-bj.fengkongcloud.com/v2/saas/anti_fraud/text';
         $mockText = '马勒戈壁有一群草泥马';
@@ -47,7 +45,7 @@ class AuditTest extends TestCase
             'type' => $mockTextType,
             'data' => [
                 'text' => $mockText,
-                'tokenId' => 0,
+                'tokenId' => "0",
             ],
         ];
 
@@ -71,7 +69,7 @@ class AuditTest extends TestCase
     }
 
     // 测试文本审核拒绝
-    public function testTextWithReject(): void
+    public function testTextWithReject()
     {
         $mockUrl = 'http://api-text-bj.fengkongcloud.com/v2/saas/anti_fraud/text';
         $mockText = '马勒戈壁有一群草泥马';
@@ -84,7 +82,7 @@ class AuditTest extends TestCase
             'type' => $mockTextType,
             'data' => [
                 'text' => $mockText,
-                'tokenId' => 0,
+                'tokenId' => "0",
             ],
         ];
 
@@ -116,7 +114,7 @@ class AuditTest extends TestCase
     }
 
     // 测试文本审核通过
-    public function testTextWithPass(): void
+    public function testTextWithPass()
     {
         $mockUrl = 'http://api-text-bj.fengkongcloud.com/v2/saas/anti_fraud/text';
         $mockText = '你好';
@@ -129,7 +127,7 @@ class AuditTest extends TestCase
             'type' => $mockTextType,
             'data' => [
                 'text' => $mockText,
-                'tokenId' => 0,
+                'tokenId' => "0",
             ],
         ];
 
@@ -151,6 +149,53 @@ class AuditTest extends TestCase
 
         // 验证结果
         $this->assertIsObject($res);
+        $this->assertInstanceOf(\Qvbilam\Audit\Response\TextResponse::class, $res);
+
+        $this->assertSame(\Qvbilam\Audit\Enum\RiskEnum::NORMAL, $res->riskType);
+        $this->assertSame(\Qvbilam\Audit\Enum\StatusEnum::AUDIT_STATUS_PASS, (int) $res->status);
+
+        $this->assertSame(true, $res->isPass()); // 是否通过
+        $this->assertSame(false, $res->isReview()); // 是否重审
+        $this->assertSame(false, $res->isReject()); // 是否拒绝
+    }
+
+    // 测试图片通过
+    public function testImageWithPass()
+    {
+        $mockUrl = "http://api-img-bj.fengkongcloud.com/v2/saas/anti_fraud/img";
+        $mockImage = "https://imechos-dev.oss-cn-hangzhou.aliyuncs.com/default/avatar/1.png";
+        $mockKey = 'mock-key';
+        $mockAppId = 'mock-appId';
+        $mockType = "mock-type";
+        $mockChannel = "mock-channel";
+        $mockTokenId = "0";
+        $mockParams = [
+            'accessKey' => $mockKey,
+            'appId' => $mockAppId,
+            'type' => $mockType,
+            'data' => [
+                'img' => $mockImage,
+                'channel' => $mockChannel,
+                'tokenId' => $mockTokenId,
+            ],
+        ];
+
+        $mockBody = '{"code":1100,"message":"\\u6210\\u529f","requestId":"a77aedfb25fb506ad820eb837b9d1574","taskId":"20bdadb4-1369d085-a27dda13-162a7b72","score":0,"riskLevel":"PASS","detail":{"description":"\\u6b63\\u5e38","descriptionV2":"\\u6b63\\u5e38","hits":[],"model":"M1000","riskSource":1000,"riskType":0,"segments":1},"status":0}';
+        $mockResponse = new \GuzzleHttp\Psr7\Response(200, [], $mockBody);
+
+        $mockClient = Mockery::mock(\GuzzleHttp\Client::class);
+        $mockClient->allows()->post($mockUrl, [
+            "json" => array_filter($mockParams)
+        ])->andReturn($mockResponse);
+
+        $t = Mockery::mock(Audit::class, [$mockKey, $mockAppId])->makePartial();
+        $t->allows()->getHttpClient()->andReturn($mockClient);
+
+        $res = $t->image($mockImage, $mockType, $mockChannel);
+
+        $this->assertIsObject($res);
+        $this->assertInstanceOf(\Qvbilam\Audit\Response\ImageResponse::class, $res);
+
 
         $this->assertSame(\Qvbilam\Audit\Enum\RiskEnum::NORMAL, $res->riskType);
         $this->assertSame(\Qvbilam\Audit\Enum\StatusEnum::AUDIT_STATUS_PASS, (int) $res->status);

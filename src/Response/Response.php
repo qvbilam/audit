@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of the qvbilam/audit
  *
@@ -15,13 +13,20 @@ namespace Qvbilam\Audit\Response;
 
 class Response
 {
+    /**
+     * @return mixed
+     */
     public function toArray()
     {
         return json_decode($this->toJson(), true);
     }
 
-    public function toJson(): bool|string
+    /**
+     * @return bool|string
+     */
+    public function toJson()
     {
         return json_encode($this);
     }
+
 }
