@@ -29,6 +29,16 @@ $response = $audit->text("文本内容");
 
 return $response->toJson(); 
 ```
+
+#### 验证图片
+```php
+use Qvbilam\Audit\Audit;
+$audit = new Audit("key", "appId");
+$response = $audit->image("图片地址");
+
+return $response->toJson(); 
+```
+
 返回结果示例
 ```json
 {
