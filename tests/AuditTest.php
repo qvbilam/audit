@@ -45,7 +45,7 @@ class AuditTest extends TestCase
             'type' => $mockTextType,
             'data' => [
                 'text' => $mockText,
-                'tokenId' => "0",
+                'tokenId' => '0',
             ],
         ];
 
@@ -82,7 +82,7 @@ class AuditTest extends TestCase
             'type' => $mockTextType,
             'data' => [
                 'text' => $mockText,
-                'tokenId' => "0",
+                'tokenId' => '0',
             ],
         ];
 
@@ -127,7 +127,7 @@ class AuditTest extends TestCase
             'type' => $mockTextType,
             'data' => [
                 'text' => $mockText,
-                'tokenId' => "0",
+                'tokenId' => '0',
             ],
         ];
 
@@ -162,13 +162,13 @@ class AuditTest extends TestCase
     // 测试图片通过
     public function testImageWithPass()
     {
-        $mockUrl = "http://api-img-bj.fengkongcloud.com/v2/saas/anti_fraud/img";
-        $mockImage = "https://imechos-dev.oss-cn-hangzhou.aliyuncs.com/default/avatar/1.png";
+        $mockUrl = 'http://api-img-bj.fengkongcloud.com/v2/saas/anti_fraud/img';
+        $mockImage = 'https://imechos-dev.oss-cn-hangzhou.aliyuncs.com/default/avatar/1.png';
         $mockKey = 'mock-key';
         $mockAppId = 'mock-appId';
-        $mockType = "mock-type";
-        $mockChannel = "mock-channel";
-        $mockTokenId = "0";
+        $mockType = 'mock-type';
+        $mockChannel = 'mock-channel';
+        $mockTokenId = '0';
         $mockParams = [
             'accessKey' => $mockKey,
             'appId' => $mockAppId,
@@ -185,7 +185,7 @@ class AuditTest extends TestCase
 
         $mockClient = Mockery::mock(\GuzzleHttp\Client::class);
         $mockClient->allows()->post($mockUrl, [
-            "json" => array_filter($mockParams)
+            'json' => array_filter($mockParams),
         ])->andReturn($mockResponse);
 
         $t = Mockery::mock(Audit::class, [$mockKey, $mockAppId])->makePartial();
@@ -195,7 +195,6 @@ class AuditTest extends TestCase
 
         $this->assertIsObject($res);
         $this->assertInstanceOf(\Qvbilam\Audit\Response\ImageResponse::class, $res);
-
 
         $this->assertSame(\Qvbilam\Audit\Enum\RiskEnum::NORMAL, $res->riskType);
         $this->assertSame(\Qvbilam\Audit\Enum\StatusEnum::AUDIT_STATUS_PASS, (int) $res->status);

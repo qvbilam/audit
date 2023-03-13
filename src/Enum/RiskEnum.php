@@ -25,13 +25,15 @@ class RiskEnum
     const CUSTOMIZE = 'customize'; // 自定义
 
     /**
-     * 数美v2转换类型.(https://help.ishumei.com/docs/tj/text/history/developDoc/)
+     * 数美v2转换类型.(https://help.ishumei.com/docs/tj/text/history/developDoc/).
+     *
      * @param string $type
+     *
      * @return string
      */
     public static function SMv2ToType($type)
     {
-        switch ($type){
+        switch ($type) {
             case 0:
                 return self::NORMAL;
             case 100:
