@@ -27,5 +27,5 @@ jobs:
       # 执行 PHPUnit 测试
       - name: PHPUnit
         run: ./vendor/bin/phpunit tests --coverage-clover coverage.xml
-        after_success:
-          - bash <(curl -s https://codecov.io/bash)
+      - name: Codecov
+        run: bash <(curl -s https://codecov.io/bash)
