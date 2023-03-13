@@ -3,6 +3,7 @@
 ![Packagist Version (custom server)](https://img.shields.io/packagist/v/qvbilam/audit)
 [![Tests](https://github.com/qvbilam/audit/actions/workflows/main.yaml/badge.svg)](https://github.com/qvbilam/audit/actions/workflows/main.yaml)
 [![StyleCI](https://github.styleci.io/repos/613246431/shield)](https://packagist.org/packages/qvbilam/audit)
+![PHP VERSION](https://img.shields.io/badge/php-%3E%3D7.3-blue)
 ![GitHub repo size](https://img.shields.io/github/repo-size/qvbilam/audit)
 
 ### 说明
