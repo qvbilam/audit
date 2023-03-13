@@ -38,7 +38,9 @@ return $response->toJson();
 #### Laravel 中使用
 `.env` 文件添加配置:
 ```shell
+# 应用key
 AUDIT_KEY=xxxx
+# 应用appId
 AUDIT_APP_ID=xxxx
 ```
 
