@@ -1,5 +1,15 @@
 <?php
+
 declare(strict_types=1);
+
+/*
+ * This file is part of the qvbilam/audit
+ *
+ * (c) qvbilam <qvbilam@163.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 use PHPUnit\Framework\TestCase;
 use Qvbilam\Audit\Audit;
@@ -9,76 +19,72 @@ class AuditTest extends TestCase
     // 测试客户端
     public function testGetHttpClient(): void
     {
-        $t = new Audit("mock-key");
+        $t = new Audit('mock-key');
         $this->assertInstanceOf(\GuzzleHttp\ClientInterface::class, $t->getHttpClient());
     }
 
     // 测试客户端参数
     public function testSetClientOptions(): void
     {
-        $t = new Qvbilam\Audit\Audit("mock-key");
-        $this->assertNull($t->getHttpClient()->getConfig("field"));
+        $t = new Qvbilam\Audit\Audit('mock-key');
+        $this->assertNull($t->getHttpClient()->getConfig('field'));
 
-        $t->setClientOptions(["field" => 123]);
-        $this->assertSame(123, $t->getHttpClient()->getConfig("field"));
+        $t->setClientOptions(['field' => 123]);
+        $this->assertSame(123, $t->getHttpClient()->getConfig('field'));
     }
 
     // 测试异常文本审核
     public function testTextWithBadRequest(): void
     {
-        $mockUrl = "http://api-text-bj.fengkongcloud.com/v2/saas/anti_fraud/text";
-        $mockText = "马勒戈壁有一群草泥马";
-        $mockTextType = "SOCIAL";
-        $mockKey = "mock-key";
-        $mockAppId = "mock-appId";
+        $mockUrl = 'http://api-text-bj.fengkongcloud.com/v2/saas/anti_fraud/text';
+        $mockText = '马勒戈壁有一群草泥马';
+        $mockTextType = 'SOCIAL';
+        $mockKey = 'mock-key';
+        $mockAppId = 'mock-appId';
         $params = [
-            "accessKey" => $mockKey,
-            "appId" => $mockAppId,
-            "type" => $mockTextType,
-            "data" => [
-                "text" => $mockText,
-                "tokenId" => 0,
+            'accessKey' => $mockKey,
+            'appId' => $mockAppId,
+            'type' => $mockTextType,
+            'data' => [
+                'text' => $mockText,
+                'tokenId' => 0,
             ],
         ];
-
 
         $mockBody = '{"code":9100,"message":"余额不足","requestId":"f262b4131a5bce0b16d4fd4bb1caeb26"}';
         $mockResponse = new \GuzzleHttp\Psr7\Response(200, [], $mockBody);
 
-
         $mockClient = Mockery::mock(\GuzzleHttp\Client::class);
         $mockClient->allows()->post($mockUrl, [
-            "json" => array_filter($params),
+            'json' => array_filter($params),
         ])->andReturn($mockResponse);
-
 
         $t = Mockery::mock(Audit::class, [$mockKey, $mockAppId])->makePartial();
         $t->allows()->getHttpClient()->andReturn($mockClient);
 
-
         $this->expectException(\Qvbilam\Audit\Exceptions\HttpException::class);
-        $this->expectExceptionMessage("余额不足");
+        $this->expectExceptionMessage('余额不足');
 
-        $t->text("马勒戈壁有一群草泥马");
+        $t->text('马勒戈壁有一群草泥马');
 
-        $this->fail("failed");
+        $this->fail('failed');
     }
 
     // 测试文本审核拒绝
     public function testTextWithReject(): void
     {
-        $mockUrl = "http://api-text-bj.fengkongcloud.com/v2/saas/anti_fraud/text";
-        $mockText = "马勒戈壁有一群草泥马";
-        $mockTextType = "SOCIAL";
-        $mockKey = "mock-key";
-        $mockAppId = "mock-appId";
+        $mockUrl = 'http://api-text-bj.fengkongcloud.com/v2/saas/anti_fraud/text';
+        $mockText = '马勒戈壁有一群草泥马';
+        $mockTextType = 'SOCIAL';
+        $mockKey = 'mock-key';
+        $mockAppId = 'mock-appId';
         $params = [
-            "accessKey" => $mockKey,
-            "appId" => $mockAppId,
-            "type" => $mockTextType,
-            "data" => [
-                "text" => $mockText,
-                "tokenId" => 0,
+            'accessKey' => $mockKey,
+            'appId' => $mockAppId,
+            'type' => $mockTextType,
+            'data' => [
+                'text' => $mockText,
+                'tokenId' => 0,
             ],
         ];
 
@@ -89,14 +95,12 @@ class AuditTest extends TestCase
         // 定义 $this->httpClient()->post() 返回值
         $mockClient = Mockery::mock(\GuzzleHttp\Client::class);
         $mockClient->allows()->post($mockUrl, [
-            "json" => array_filter($params),
+            'json' => array_filter($params),
         ])->andReturn($mockResponse);
-
 
         // 将text() 内局部的http请求替换成 定义$mockClient
         $t = Mockery::mock(Audit::class, [$mockKey, $mockAppId])->makePartial();
         $t->allows()->getHttpClient()->andReturn($mockClient);
-
 
         $res = $t->text($mockText, $mockTextType);
 
@@ -104,7 +108,7 @@ class AuditTest extends TestCase
         $this->assertIsObject($res);
 
         $this->assertSame(\Qvbilam\Audit\Enum\RiskEnum::ABUSE, $res->riskType);
-        $this->assertSame(\Qvbilam\Audit\Enum\StatusEnum::AUDIT_STATUS_REJECT, (int)$res->status);
+        $this->assertSame(\Qvbilam\Audit\Enum\StatusEnum::AUDIT_STATUS_REJECT, (int) $res->status);
 
         $this->assertSame(false, $res->isPass()); // 是否通过
         $this->assertSame(false, $res->isReview()); // 是否重审
@@ -114,18 +118,18 @@ class AuditTest extends TestCase
     // 测试文本审核通过
     public function testTextWithPass(): void
     {
-        $mockUrl = "http://api-text-bj.fengkongcloud.com/v2/saas/anti_fraud/text";
-        $mockText = "你好";
-        $mockTextType = "SOCIAL";
-        $mockKey = "mock-key";
-        $mockAppId = "mock-appId";
+        $mockUrl = 'http://api-text-bj.fengkongcloud.com/v2/saas/anti_fraud/text';
+        $mockText = '你好';
+        $mockTextType = 'SOCIAL';
+        $mockKey = 'mock-key';
+        $mockAppId = 'mock-appId';
         $params = [
-            "accessKey" => $mockKey,
-            "appId" => $mockAppId,
-            "type" => $mockTextType,
-            "data" => [
-                "text" => $mockText,
-                "tokenId" => 0,
+            'accessKey' => $mockKey,
+            'appId' => $mockAppId,
+            'type' => $mockTextType,
+            'data' => [
+                'text' => $mockText,
+                'tokenId' => 0,
             ],
         ];
 
@@ -136,14 +140,12 @@ class AuditTest extends TestCase
         // 定义 $this->httpClient()->post() 返回值
         $mockClient = Mockery::mock(\GuzzleHttp\Client::class);
         $mockClient->allows()->post($mockUrl, [
-            "json" => array_filter($params),
+            'json' => array_filter($params),
         ])->andReturn($mockResponse);
-
 
         // 将text() 内局部的http请求替换成 定义$mockClient
         $t = Mockery::mock(Audit::class, [$mockKey, $mockAppId])->makePartial();
         $t->allows()->getHttpClient()->andReturn($mockClient);
-
 
         $res = $t->text($mockText, $mockTextType);
 
@@ -151,7 +153,7 @@ class AuditTest extends TestCase
         $this->assertIsObject($res);
 
         $this->assertSame(\Qvbilam\Audit\Enum\RiskEnum::NORMAL, $res->riskType);
-        $this->assertSame(\Qvbilam\Audit\Enum\StatusEnum::AUDIT_STATUS_PASS, (int)$res->status);
+        $this->assertSame(\Qvbilam\Audit\Enum\StatusEnum::AUDIT_STATUS_PASS, (int) $res->status);
 
         $this->assertSame(true, $res->isPass()); // 是否通过
         $this->assertSame(false, $res->isReview()); // 是否重审
