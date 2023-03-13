@@ -59,7 +59,6 @@ class TextResponse extends Response
     /**
      * 设置请求id.
      *
-     * @param string $requestId
      * @return TextResponse
      */
     public function setRequestId(string $requestId): static
@@ -80,7 +79,6 @@ class TextResponse extends Response
     /**
      * 设置审核状态
      *
-     * @param string $status
      * @return TextResponse
      */
     public function setStatus(string $status): static
@@ -101,7 +99,6 @@ class TextResponse extends Response
     /**
      * 设置描述.
      *
-     * @param string $description
      * @return TextResponse
      */
     public function setDescription(string $description): static
@@ -122,7 +119,6 @@ class TextResponse extends Response
     /**
      * 设置审核文本.
      *
-     * @param string $text
      * @return TextResponse
      */
     public function setText(string $text): static
@@ -143,7 +139,6 @@ class TextResponse extends Response
     /**
      * 设置风险类型.
      *
-     * @param string $riskType
      * @return TextResponse
      */
     public function setRiskType(string $riskType): static
@@ -164,7 +159,6 @@ class TextResponse extends Response
     /**
      * 设置分数.
      *
-     * @param int $score
      * @return TextResponse
      */
     public function setScore(int $score): static
