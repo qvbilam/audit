@@ -1,47 +1,65 @@
 <?php
+
+/*
+ * This file is part of the qvbilam/audit
+ *
+ * (c) qvbilam <qvbilam@163.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Qvbilam\Audit\Response;
 
 use Qvbilam\Audit\Enum\StatusEnum;
 
-trait BaseResponse{
+trait BaseResponse
+{
     /**
-     * 请求id
+     * 请求id.
+     *
      * @var string
      */
     public $requestId;
 
     /**
-     * 审核内容
+     * 审核内容.
+     *
      * @var string
      */
     public $content;
 
     /**
      * 状态
+     *
      * @var string
      */
     public $status;
 
     /**
-     * 描述
+     * 描述.
+     *
      * @var string
      */
     public $description;
 
     /**
-     * 风险等级
+     * 风险等级.
+     *
      * @var string
      */
     public $riskType;
 
     /**
-     * 危险分数: 0~100
+     * 危险分数: 0~100.
+     *
      * @var int
      */
     public $score;
 
     /**
      * 是否通过.
+     *
      * @return bool
      */
     public function isPass()
@@ -51,6 +69,7 @@ trait BaseResponse{
 
     /**
      * 是否需要人工审核.
+     *
      * @return bool
      */
     public function isReview()
@@ -60,6 +79,7 @@ trait BaseResponse{
 
     /**
      * 是否拒绝.
+     *
      * @return bool
      */
     public function isReject()
@@ -67,9 +87,9 @@ trait BaseResponse{
         return StatusEnum::AUDIT_STATUS_REJECT == $this->status;
     }
 
-
     /**
      * 获取请求id.
+     *
      * @return string
      */
     public function getRequestId()
@@ -81,6 +101,7 @@ trait BaseResponse{
      * 设置请求id.
      *
      * @param string $requestId
+     *
      * @return BaseResponse
      */
     public function setRequestId($requestId)
@@ -92,6 +113,7 @@ trait BaseResponse{
 
     /**
      * 获取审核状态
+     *
      * @return string
      */
     public function getStatus()
@@ -103,6 +125,7 @@ trait BaseResponse{
      * 设置审核状态
      *
      * @param string $status
+     *
      * @return BaseResponse
      */
     public function setStatus($status)
@@ -114,6 +137,7 @@ trait BaseResponse{
 
     /**
      * 获取描述.
+     *
      * @return string
      */
     public function getDescription()
@@ -125,6 +149,7 @@ trait BaseResponse{
      * 设置描述.
      *
      * @param string $description
+     *
      * @return BaseResponse
      */
     public function setDescription($description)
@@ -136,6 +161,7 @@ trait BaseResponse{
 
     /**
      * 获取风险类型.
+     *
      * @return string
      */
     public function getRiskType()
@@ -147,6 +173,7 @@ trait BaseResponse{
      * 设置风险类型.
      *
      * @param string $riskType
+     *
      * @return BaseResponse
      */
     public function setRiskType($riskType)
@@ -158,6 +185,7 @@ trait BaseResponse{
 
     /**
      * 获取分数.
+     *
      * @return int
      */
     public function getScore()
@@ -169,6 +197,7 @@ trait BaseResponse{
      * 设置分数.
      *
      * @param int $score
+     *
      * @return BaseResponse
      */
     public function setScore($score)
@@ -180,6 +209,7 @@ trait BaseResponse{
 
     /**
      * 获取审核内容.
+     *
      * @return string
      */
     public function getContent()
@@ -189,7 +219,9 @@ trait BaseResponse{
 
     /**
      * 设置审核内容.
+     *
      * @param string $text
+     *
      * @return BaseResponse
      */
     public function setContent($text)
