@@ -17,11 +17,6 @@ class StatusEnum
     const AUDIT_STATUS_REVIEW = 0;
     const AUDIT_STATUS_PASS = 1;
 
-    /**
-     * @param string $status
-     *
-     * @return int
-     */
     public static function SMv2ToStatus(string $status): int
     {
         switch ($status) {

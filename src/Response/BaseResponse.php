@@ -59,8 +59,6 @@ trait BaseResponse
 
     /**
      * 是否通过.
-     *
-     * @return bool
      */
     public function isPass(): bool
     {
@@ -69,8 +67,6 @@ trait BaseResponse
 
     /**
      * 是否需要人工审核.
-     *
-     * @return bool
      */
     public function isReview(): bool
     {
@@ -79,8 +75,6 @@ trait BaseResponse
 
     /**
      * 是否拒绝.
-     *
-     * @return bool
      */
     public function isReject(): bool
     {
@@ -89,8 +83,6 @@ trait BaseResponse
 
     /**
      * 获取请求id.
-     *
-     * @return string
      */
     public function getRequestId(): string
     {
@@ -113,8 +105,6 @@ trait BaseResponse
 
     /**
      * 获取审核状态
-     *
-     * @return string
      */
     public function getStatus(): string
     {
@@ -161,8 +151,6 @@ trait BaseResponse
 
     /**
      * 获取风险类型.
-     *
-     * @return string
      */
     public function getRiskType(): string
     {
@@ -171,10 +159,6 @@ trait BaseResponse
 
     /**
      * 设置风险类型.
-     *
-     * @param string $riskType
-     *
-     * @return BaseResponse
      */
     public function setRiskType(string $riskType): BaseResponse
     {
@@ -185,8 +169,6 @@ trait BaseResponse
 
     /**
      * 获取分数.
-     *
-     * @return int
      */
     public function getScore(): int
     {
@@ -197,8 +179,6 @@ trait BaseResponse
      * 设置分数.
      *
      * @param int $score
-     *
-     * @return BaseResponse
      */
     public function setScore($score): BaseResponse
     {
@@ -209,8 +189,6 @@ trait BaseResponse
 
     /**
      * 获取审核内容.
-     *
-     * @return string
      */
     public function getContent(): string
     {
@@ -219,10 +197,6 @@ trait BaseResponse
 
     /**
      * 设置审核内容.
-     *
-     * @param string $content
-     *
-     * @return BaseResponse
      */
     public function setContent(string $content): BaseResponse
     {

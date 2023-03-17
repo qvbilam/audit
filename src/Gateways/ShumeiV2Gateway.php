@@ -1,5 +1,15 @@
 <?php
+
 declare(strict_types=1);
+
+/*
+ * This file is part of the qvbilam/audit
+ *
+ * (c) qvbilam <qvbilam@163.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
 
 namespace Qvbilam\Audit\Gateways;
 
@@ -15,26 +25,26 @@ class ShumeiV2Gateway extends Gateway
 {
     use HttpClient;
 
-    const TEXT_URL = "http://api-text-bj.fengkongcloud.com/v2/saas/anti_fraud/text";
-    const IMAGE_URL = "http://api-img-bj.fengkongcloud.com/v2/saas/anti_fraud/img";
-    const FIELD_APP_KEY = "app_key";
-    const FIELD_APP_ID = "app_id";
-    const DEFAULT_USER_ID = "0";
-    const TEXT_TYPE = "text.type";
-    const IMAGE_TYPE = "image.type";
-    const IMAGE_CHANNEL = "image.channel";
+    const TEXT_URL = 'http://api-text-bj.fengkongcloud.com/v2/saas/anti_fraud/text';
+    const IMAGE_URL = 'http://api-img-bj.fengkongcloud.com/v2/saas/anti_fraud/img';
+    const FIELD_APP_KEY = 'app_key';
+    const FIELD_APP_ID = 'app_id';
+    const DEFAULT_USER_ID = '0';
+    const TEXT_TYPE = 'text.type';
+    const IMAGE_TYPE = 'image.type';
+    const IMAGE_CHANNEL = 'image.channel';
 
     const REQUEST_SUCCESS_CODE = '1100';
-
 
     /**
      * > This function takes a ContentInterface object, gets the text from it, gets the text type from the config, creates
      * a params array, sends a POST request to the TEXT_URL with the params, gets the response, and returns the response
-     * after auditing it
+     * after auditing it.
      *
-     * @param ContentInterface $content The content to be audited.
+     * @param ContentInterface $content the content to be audited
      *
-     * @return Response A response object.
+     * @return Response a response object
+     *
      * @throws HttpException
      */
     public function text(ContentInterface $content): Response
@@ -43,16 +53,17 @@ class ShumeiV2Gateway extends Gateway
         $type = $this->config->get(self::TEXT_TYPE);
         $params = $this->params(['text' => $text, 'type' => $type]);
         $response = $this->getRequestResult($this->postJson(self::TEXT_URL, $params));
+
         return $this->auditResponse($response, $text);
     }
 
-
     /**
-     * > This function takes a ContentInterface object, and returns a Response object
+     * > This function takes a ContentInterface object, and returns a Response object.
      *
-     * @param ContentInterface $content The content to be audited.
+     * @param ContentInterface $content the content to be audited
      *
-     * @return Response A response object.
+     * @return Response a response object
+     *
      * @throws HttpException
      */
     public function image(ContentInterface $content): Response
@@ -60,18 +71,18 @@ class ShumeiV2Gateway extends Gateway
         $image = $content->getContent();
         $type = $this->config->get(self::IMAGE_TYPE);
         $channel = $this->config->get(self::IMAGE_CHANNEL);
-        $params = $this->params(["img" => $image, "channel" => $channel, "type" => $type]);
+        $params = $this->params(['img' => $image, 'channel' => $channel, 'type' => $type]);
         $response = $this->getRequestResult($this->postJson(self::IMAGE_URL, $params));
+
         return $this->auditResponse($response, $image);
     }
 
-
     /**
-     * It takes an array of data, adds the app key and app id to it, and returns the array
+     * It takes an array of data, adds the app key and app id to it, and returns the array.
      *
-     * @param array data The data to be sent to the server.
+     * @param array data The data to be sent to the server
      *
-     * @return array The params method is returning an array of data.
+     * @return array the params method is returning an array of data
      */
     protected function params(array $data): array
     {
@@ -88,14 +99,14 @@ class ShumeiV2Gateway extends Gateway
         return $params;
     }
 
-
     /**
      * > If the response status code is not 200, throw an exception. If the response code is not 0, throw an exception.
-     * Otherwise, return the response content
+     * Otherwise, return the response content.
      *
      * @param response The response object returned by the GuzzleHttp client
      *
-     * @return stdClass The response from the API.
+     * @return stdClass the response from the API
+     *
      * @throws HttpException
      */
     protected function getRequestResult($response): stdClass
