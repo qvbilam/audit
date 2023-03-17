@@ -22,18 +22,20 @@
 
 ### 使用
 #### 验证文本
+
 ```php
-use Qvbilam\Audit\Audit;
-$audit = new Audit("key", "appId");
+use Qvbilam\Audit\ShuMeiV2Gateway;
+$audit = new ShuMeiV2Gateway("key", "appId");
 $response = $audit->text("文本内容");
 
 return $response->toJson(); 
 ```
 
 #### 验证图片
+
 ```php
-use Qvbilam\Audit\Audit;
-$audit = new Audit("key", "appId");
+use Qvbilam\Audit\ShuMeiV2Gateway;
+$audit = new ShuMeiV2Gateway("key", "appId");
 $response = $audit->image("图片地址");
 
 return $response->toJson(); 
@@ -71,10 +73,11 @@ AUDIT_APP_ID=xxxx
 ```
 
 通过自动注入方式使用:
-```php
-use Qvbilam\Audit\Audit;
 
-public function auditText(Request $request, Audit $audit)
+```php
+use Qvbilam\Audit\ShuMeiV2Gateway;
+
+public function auditText(Request $request, ShuMeiV2Gateway $audit)
 {
     $text = $request->query("txt");
     $audit = $audit->text($text);
@@ -83,8 +86,9 @@ public function auditText(Request $request, Audit $audit)
 ```
 
 或者使用服务名称方式使用:
+
 ```php
-use Qvbilam\Audit\Audit;
+use Qvbilam\Audit\ShuMeiV2Gateway;
 
 public function auditTextInjection(Request $request)
 {

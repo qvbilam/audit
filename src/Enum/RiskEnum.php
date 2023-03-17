@@ -31,7 +31,7 @@ class RiskEnum
      *
      * @return string
      */
-    public static function SMv2ToType($type)
+    public static function SMv2ToType(string $type): string
     {
         switch ($type) {
             case 0:

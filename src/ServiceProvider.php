@@ -18,7 +18,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     public function register()
     {
         $this->app->singleton(Audit::class, function () {
-            return new Audit(config('services.audit.key'), config('services.audit.app_id'));
+            return new Audit(config('services.audit'));
         });
 
         $this->app->alias(Audit::class, 'audit');
@@ -27,7 +27,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     /**
      * @return string[]
      */
-    public function provides()
+    public function provides(): array
     {
         return [Audit::class, 'audit'];
     }

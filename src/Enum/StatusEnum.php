@@ -22,7 +22,7 @@ class StatusEnum
      *
      * @return int
      */
-    public static function SMv2ToStatus($status)
+    public static function SMv2ToStatus(string $status): int
     {
         switch ($status) {
             case 'REJECT':

@@ -13,6 +13,8 @@ namespace Qvbilam\Audit\Response;
 
 class Response
 {
+    use BaseResponse;
+
     /**
      * @return mixed
      */

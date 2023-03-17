@@ -32,7 +32,7 @@ trait BaseResponse
     /**
      * 状态
      *
-     * @var string
+     * @var int
      */
     public $status;
 
@@ -62,7 +62,7 @@ trait BaseResponse
      *
      * @return bool
      */
-    public function isPass()
+    public function isPass(): bool
     {
         return StatusEnum::AUDIT_STATUS_PASS == $this->status;
     }
@@ -72,7 +72,7 @@ trait BaseResponse
      *
      * @return bool
      */
-    public function isReview()
+    public function isReview(): bool
     {
         return StatusEnum::AUDIT_STATUS_REVIEW == $this->status;
     }
@@ -82,7 +82,7 @@ trait BaseResponse
      *
      * @return bool
      */
-    public function isReject()
+    public function isReject(): bool
     {
         return StatusEnum::AUDIT_STATUS_REJECT == $this->status;
     }
@@ -92,7 +92,7 @@ trait BaseResponse
      *
      * @return string
      */
-    public function getRequestId()
+    public function getRequestId(): string
     {
         return $this->requestId;
     }
@@ -116,7 +116,7 @@ trait BaseResponse
      *
      * @return string
      */
-    public function getStatus()
+    public function getStatus(): string
     {
         return $this->status;
     }
@@ -124,7 +124,7 @@ trait BaseResponse
     /**
      * 设置审核状态
      *
-     * @param string $status
+     * @param int $status
      *
      * @return BaseResponse
      */
@@ -164,7 +164,7 @@ trait BaseResponse
      *
      * @return string
      */
-    public function getRiskType()
+    public function getRiskType(): string
     {
         return $this->riskType;
     }
@@ -176,7 +176,7 @@ trait BaseResponse
      *
      * @return BaseResponse
      */
-    public function setRiskType($riskType)
+    public function setRiskType(string $riskType): BaseResponse
     {
         $this->riskType = $riskType;
 
@@ -188,7 +188,7 @@ trait BaseResponse
      *
      * @return int
      */
-    public function getScore()
+    public function getScore(): int
     {
         return $this->score;
     }
@@ -200,7 +200,7 @@ trait BaseResponse
      *
      * @return BaseResponse
      */
-    public function setScore($score)
+    public function setScore($score): BaseResponse
     {
         $this->score = $score;
 
@@ -212,7 +212,7 @@ trait BaseResponse
      *
      * @return string
      */
-    public function getContent()
+    public function getContent(): string
     {
         return $this->content;
     }
@@ -220,13 +220,13 @@ trait BaseResponse
     /**
      * 设置审核内容.
      *
-     * @param string $text
+     * @param string $content
      *
      * @return BaseResponse
      */
-    public function setContent($text)
+    public function setContent(string $content): BaseResponse
     {
-        $this->text = $text;
+        $this->content = $content;
 
         return $this;
     }
