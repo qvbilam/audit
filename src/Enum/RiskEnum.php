@@ -26,10 +26,6 @@ class RiskEnum
 
     /**
      * 数美v2转换类型.(https://help.ishumei.com/docs/tj/text/history/developDoc/).
-     *
-     * @param string $type
-     *
-     * @return string
      */
     public static function SMv2ToType(string $type): string
     {
